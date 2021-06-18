@@ -8,12 +8,13 @@ import FormularioCines from './FormularioCines'
 
 export default function CrearCines() {
 
-    const histori = useHistory();
+    const history = useHistory();
     const [errores, setErrores ]= useState<string[]>([]);
 
 async function crear(cine:cineCreacionDTO){
     try {
         await axios.post(urlCines, cine)
+        history.push('/cines');
     } catch (error) {
         setErrores(error.response.data);
     }
@@ -27,9 +28,6 @@ async function crear(cine:cineCreacionDTO){
                 modelo={{ nombre: '' }}
                 onSubmit={async valores => await crear(valores)}
             />
-
-
-
         </>
     )
 }

@@ -1,50 +1,44 @@
 import { landingPageDTO } from './peliculas/peliculas.model';
 import React, { useEffect, useState } from 'react';
 import ListadoPeliculas from './peliculas/ListadoPeliculas'
+import axios, { AxiosResponse } from 'axios';
+import { urlPeliculas } from './Utilidades/endpoints';
+import AlertaContext from './Utilidades/AlertaContext';
+import Autorizado from './Auth/Autorizado';
 
-export default function LandingPage(){
 
-    const [peliculas, setPeliculas] = useState<landingPageDTO>({})
+export default function LandingPage() {
+
+  const [peliculas, setPeliculas] = useState<landingPageDTO>({})
+
   useEffect(() => {
-    const timerId = setTimeout(() => {
-      setPeliculas({
-        enCartelera: [
-          {
-            id: 1,
-            titulo: 'Speider-Man: Far From Home',
-            poster: 'https://m.media-amazon.com/images/M/MV5BMGZlNTY1ZWUtYTMzNC00ZjUyLWE0MjQtMTMxN2E3ODYxMWVmXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_UX182_CR0,0,182,268_AL_.jpg'
-          },
-          {
-            id: 2,
-            titulo: 'Moana',
-            poster: 'https://m.media-amazon.com/images/M/MV5BMjI4MzU5NTExNF5BMl5BanBnXkFtZTgwNzY1MTEwMDI@._V1_UX182_CR0,0,182,268_AL_.jpg'
-          }
-        ],
-        proximosEstrenos: [
-          {
-            id: 3,
-            titulo: 'Soul',
-            poster: 'https://m.media-amazon.com/images/M/MV5BZGE1MDg5M2MtNTkyZS00MTY5LTg1YzUtZTlhZmM1Y2EwNmFmXkEyXkFqcGdeQXVyNjA3OTI0MDc@._V1_UX182_CR0,0,182,268_AL_.jpg'
-          }
-        ]
-      }
-      )
+    cargarDatos();
+  },[])
 
-    }, 1000);
-    return () => clearTimeout(timerId);
+  function cargarDatos(){
+    axios.get(urlPeliculas)
+    .then((respuesta:AxiosResponse<landingPageDTO>)=>{
+      setPeliculas(respuesta.data);
+    })
+  }
+  return (
+    <>
+    <Autorizado 
+          autorizado = {  <>Estas Autorizado</> }
+          noAutorizado = {  <>No estas Autorizado</> }
+          role="admin"
+      />
+    <AlertaContext.Provider value={()=>cargarDatos()}>
+       <h3>En cartelera</h3>
+      <ListadoPeliculas peliculas={peliculas.enCines} />
 
-  })
-  
-    return(
-        <>
-            <h3>En cartelera</h3>
-          <ListadoPeliculas peliculas={peliculas.enCartelera} />
+      <h3>Próximos Estrenos</h3>
+      <ListadoPeliculas peliculas={peliculas.proximosEstrenos} />
+    </AlertaContext.Provider>
+     
 
-          <h3>Próximos Estrenos</h3>
-          <ListadoPeliculas peliculas={peliculas.proximosEstrenos} />
-
-        </>
+    </>
 
 
-    )
+  )
 }

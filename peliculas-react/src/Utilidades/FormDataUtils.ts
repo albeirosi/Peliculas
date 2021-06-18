@@ -1,3 +1,4 @@
+import { peliculaCreacionDTO } from '../peliculas/peliculas.model';
 import { actorCreacionDTO } from './../actores/actores.model';
  
  export function convertirActorAFormData(actor:actorCreacionDTO):FormData{
@@ -27,4 +28,34 @@ import { actorCreacionDTO } from './../actores/actores.model';
      ]= formato.formatToParts(date);
 
      return `${year}-${month}-${day}`;
+ }
+
+ export function convertirPeliculaAFormData(pelicula:peliculaCreacionDTO):FormData
+ {
+    const formData = new FormData();
+
+    formData.append('titulo', pelicula.titulo);
+
+    if(pelicula.resumen){
+        formData.append('resumen',pelicula.resumen);
+    }
+
+    formData.append('trailer', pelicula.trailer);
+
+    formData.append('enCines', String(pelicula.enCines));
+
+    if(pelicula.fechaLanzamiento){
+        formData.append('fechaLanzamiento',formatearFecha(pelicula.fechaLanzamiento))
+    }
+
+    if(pelicula.poster){
+        formData.append('poster', pelicula.poster);
+    }
+
+    formData.append('generosIds', JSON.stringify(pelicula.generosIds));
+    formData.append('cinesIds', JSON.stringify(pelicula.cinesIds));
+    formData.append('actores', JSON.stringify(pelicula.actores));
+
+
+    return formData;
  }

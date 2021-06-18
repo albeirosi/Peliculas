@@ -6,7 +6,7 @@ import { ChangeEvent, useState } from "react"
 export default function FormGroupImagen(props: formGroupImagenProps) {
 
     const divStyle = { marginTop: '10px' }
-    const imgStyle = { width: '250px' }
+    const imgStyle = { width: '150px' }
 
     const [imagenBase64, setImagenBase64] = useState('');
     const { values } = useFormikContext<any>();

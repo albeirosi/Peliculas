@@ -59,6 +59,7 @@ export default function FormularioPeliculas(props: formularioPeliculasProps) {
                         <FormGroupText label="Trailer" campo="trailer" />
                         <FormGroupFecha campo="fechaLanzamiento" label="Fecha de Lanzamiento" />
                         <FormGroupImagen campo="poster" label="Poster" imagenURL={props.modelo.posterURL} />
+                        <FormGroupText label="Resumen" campo="resumen" />
                         <div className="form-group">
                             <label>Géneros:</label>
                             <SelectorMultiple seleccionados={generosSeleccionados}

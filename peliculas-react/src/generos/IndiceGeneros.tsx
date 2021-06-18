@@ -18,17 +18,18 @@ export default function IndiceGeneros() {
                 {(generos, botones) => <>
                     <thead>
                         <tr>
-                            <th style={{ width: '250px' }}>Editar</th>
-                            <th style={{ width: '250px' }}> Eliminar</th>
                             <th >Nombre</th>
+                            <th style={{ width: '25px' }}>Editar</th>
+                            <th style={{ width: '25px' }}>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         {generos?.map(genero =>
                             <tr key={genero.id}>
-                                <td>{botones(`generos/editar/${genero.id}`, genero.id)}</td>
+
                                 <td >{genero.nombre}</td>
+                                {botones(`generos/editar/${genero.id}`, genero.id)}
 
                             </tr>)}
                     </tbody>

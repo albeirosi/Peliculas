@@ -20,12 +20,12 @@ namespace PeliculasAPI.Controllers
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GenerosController : ControllerBase
     {
-        private readonly AplicationsDbContext _dbContext;
+        private readonly AplicationsDbContext _context;
         private readonly IMapper _mapper;
 
         public GenerosController(AplicationsDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext;
+            _context = dbContext;
             _mapper = mapper;
         }
 
@@ -33,7 +33,7 @@ namespace PeliculasAPI.Controllers
         // [ServiceFilter(typeof(MyActionFilters))]
         public async Task<ActionResult<List<GeneroDTO>>> GetGenerosAll([FromQuery] PaginacionDTO paginacionDTO)
         {
-            var query=  _dbContext.Generos.AsQueryable();
+            var query=  _context.Generos.AsQueryable();
 
             await HttpContext.InsertarParametrosPagCabecera(query);
             var genero =await query.OrderBy(x => x.Nombre).Paginar(paginacionDTO).ToListAsync();
@@ -41,11 +41,19 @@ namespace PeliculasAPI.Controllers
             return generoDTO;
         }
 
+        [HttpGet("todos")]
+        public async Task<ActionResult<List<GeneroDTO>>> Todos()
+        {
+            var generos = await _context.Generos.OrderBy(x=>x.Nombre).ToListAsync();
+
+            return _mapper.Map<List<GeneroDTO>>(generos);
+        }
+
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<GeneroDTO>> GetGeneroId(int id)
         {                 
-            var genero = await _dbContext.Generos.FirstOrDefaultAsync(x => x.Id==id);
+            var genero = await _context.Generos.FirstOrDefaultAsync(x => x.Id==id);
 
             if(genero == null) 
             {
@@ -61,8 +69,8 @@ namespace PeliculasAPI.Controllers
         {
             var genero = _mapper.Map<Genero>(generoDto);
 
-            _dbContext.Add(genero);
-            await _dbContext.SaveChangesAsync();
+            _context.Add(genero);
+            await _context.SaveChangesAsync();
 
             return NoContent();
 
@@ -72,12 +80,12 @@ namespace PeliculasAPI.Controllers
         public async Task<ActionResult<GeneroDTO>> PutGenero(int id, [FromBody] GeneroCreacionDTO generoCreacionDto)
         {
 
-            var genero = await _dbContext.Generos.FirstOrDefaultAsync(x => x.Id == id);
+            var genero = await _context.Generos.FirstOrDefaultAsync(x => x.Id == id);
             if(genero == null) { return NotFound(); }
 
                 genero = _mapper.Map(generoCreacionDto, genero);
-           // _dbContext.Entry(genero).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+           // _context.Entry(genero).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -87,15 +95,15 @@ namespace PeliculasAPI.Controllers
         public async Task<ActionResult<Genero>>DeleteGenero(int id)
         {
 
-            var existe = await _dbContext.Generos.AnyAsync(x => x.Id == id);
+            var existe = await _context.Generos.AnyAsync(x => x.Id == id);
 
             if (!existe)
             {
                 return NotFound();
             }
 
-            _dbContext.Generos.Remove(new Genero() { Id = id });
-            await _dbContext.SaveChangesAsync();
+            _context.Generos.Remove(new Genero() { Id = id });
+            await _context.SaveChangesAsync();
 
             return NoContent();
 

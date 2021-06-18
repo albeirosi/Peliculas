@@ -5,7 +5,7 @@ import {  Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import FormGroupText from './../Utilidades/FormGroupText';
 import {generoCreacionDTO} from './generos.model.d';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 
 export default function FormulariosGeneros(props:formulariosGenerosProps) {

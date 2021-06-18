@@ -30,7 +30,8 @@ namespace PeliculasAPI
         {
             services.AddDbContext<AplicationsDbContext>(op =>
             {
-                op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), sqlServer => sqlServer.UseNetTopologySuite());
+                op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
+                    sqlServer => sqlServer.UseNetTopologySuite());
             });
 
 

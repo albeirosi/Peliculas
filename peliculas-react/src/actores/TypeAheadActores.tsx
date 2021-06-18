@@ -1,18 +1,17 @@
+import axios, { AxiosResponse } from 'axios';
 import { ReactElement, useState  } from 'react';
-import { Typeahead } from 'react-bootstrap-typeahead'
+import { AsyncTypeahead} from 'react-bootstrap-typeahead'
+import { urlActores } from '../Utilidades/endpoints';
 import { actorPeliculaDTO } from './actores.model'
 
 
 export default function TypeaheadAutores(props: typeaheadAutoresProps) {
 
-    const actores: actorPeliculaDTO[] = [
-        { id: 1, nombre: 'Emma Watson', personaje: '', foto: 'https://m.media-amazon.com/images/M/MV5BZWY5YWVjZmItM2JhYy00MzRjLWIwNzQtOWUxODBmYzA5OWZhXkEyXkFqcGdeQXVyMzQ3Nzk5MTU@._V1_UX99_CR0,0,99,99_AL_.jpg' },
-        { id: 2, nombre: 'El Samuel Jason', personaje: '', foto: 'https://m.media-amazon.com/images/M/MV5BMTQ1NTQwMTYxNl5BMl5BanBnXkFtZTYwMjA1MzY1._V1_UX214_CR0,0,214,317_AL_.jpg' },
-        { id: 3, nombre: 'Angelina Jolie', personaje: '', foto: 'https://m.media-amazon.com/images/M/MV5BODg3MzYwMjE4N15BMl5BanBnXkFtZTcwMjU5NzAzNw@@._V1_UY317_CR22,0,214,317_AL_.jpg' }
-    ]
+    const[opciones,setOpciones]=useState<actorPeliculaDTO[]>([]);
 
     const seleccion: actorPeliculaDTO[] = [];
     const [elementoArrastrado, setElementoArrastrado ] = useState<actorPeliculaDTO | undefined>(undefined);
+    const[estaCargando, setEstaCargando] =useState(false);
 
     function manejarDragStart(actor:actorPeliculaDTO)
     {
@@ -25,25 +24,29 @@ export default function TypeaheadAutores(props: typeaheadAutoresProps) {
 
         if(actor.id !== elementoArrastrado.id){
             const elementoArrastradoIndice=props.actores.findIndex(x => x.id === elementoArrastrado.id)
-
-            const actorIndice= props.actores.findIndex(x => x.id === actor.id);
-            
+            const actorIndice= props.actores.findIndex(x => x.id === actor.id);            
             const actores =  [...props.actores];
             actores[actorIndice]=elementoArrastrado;
             actores[elementoArrastradoIndice]=actor;
 
             props.onAdd(actores);
+        }        
+    }
 
+    function manejarBusqueda(query:string){
+        setEstaCargando(true);
 
-
-        }
-        
+        axios.get(`${urlActores}/buscarPorNombre/${query}`)
+                .then((respuesta:AxiosResponse<actorPeliculaDTO[]>)=>{
+                    setOpciones(respuesta.data);
+                    setEstaCargando(false);
+                })
     }
 
     return (
         <>
             <label>Actores</label>
-            <Typeahead
+            <AsyncTypeahead
                 id="typeahead"
                 onChange={actores => {
                     if (props.actores.findIndex(x => x.id === actores[0].id) === -1) {
@@ -53,9 +56,11 @@ export default function TypeaheadAutores(props: typeaheadAutoresProps) {
 
                 }}
 
-                options = {actores}
+                options = {opciones}
                 labelKey = {actor => actor.nombre}
-                filterBy = {['nombre']}
+                filterBy = {()=>true}
+                isLoading={estaCargando}
+                onSearch={manejarBusqueda}
                 placeholder = "Escriba el nombre del actor"
                 minLength = {2}
                 flip = {true}

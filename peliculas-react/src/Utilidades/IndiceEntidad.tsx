@@ -42,10 +42,10 @@ export default function IndiceEntidad<T>(props: indiceEntidadProps<T>) {
     }
 
     const botones = (urlEditar: string, id: number) => <>
-        <td>
+        <td className="border-0">
             <Link className="btn btn-info" to={urlEditar}> Editar</Link>
         </td>
-        <td>
+        <td className="border-0">
             <Button className="btn btn-danger" onClick={() => confirmacion(() => borrar(id))}>Eliminar </Button>
         </td>
 
@@ -79,7 +79,7 @@ export default function IndiceEntidad<T>(props: indiceEntidadProps<T>) {
             <div className="col-sm-12 table-responsive">
                 <ListadoGenerico listado={entidades}>
                     <>
-                        <table className="table table-striped ">
+                        <table className="table table-striped  ">
                             {props.children(entidades!, botones)}
                         </table>
                         <div className="row justify-content-center">

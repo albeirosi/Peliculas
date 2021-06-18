@@ -13,29 +13,33 @@ import IndiceCines from './cines/IndiceCines'
 import CrearCines from './cines/CrearCines'
 import EditarCines from './cines/EditarCines'
 
+
 import FiltrarPeliculas from './peliculas/FiltroPeliculas'
 import CrearPeliculas from './peliculas/CrearPeliculas'
 import EditarPeliculas from './peliculas/EditarPeliculas'
 import RedirectLanding from './Utilidades/RedirectLanding'
 
+import DetallePelicula from './peliculas/DetallePelicula'
+
 
 const rutas=[
-{path:'/generos',componente:IndiceGeneros,exact:true},
-{path:'/generos/Crear',componente:CrearGenero},
-{path:'/generos/Editar/:id(\\d+)',componente:EditarGenero},
+{path:'/generos',componente:IndiceGeneros,exact:true, esAdmin:true},
+{path:'/generos/Crear',componente:CrearGenero, esAdmin:true},
+{path:'/generos/Editar/:id(\\d+)',componente:EditarGenero, esAdmin:true},
 
-{path:'/actores',componente:IndiceActores,exact:true},
-{path:'/actores/Crear',componente:CrearActores},
-{path:'/actores/Editar/:id(\\d+)',componente:EditarActores},
+{path:'/actores',componente:IndiceActores,exact:true, esAdmin:true},
+{path:'/actores/Crear',componente:CrearActores, esAdmin:true},
+{path:'/actores/Editar/:id(\\d+)',componente:EditarActores, esAdmin:true},
 
-{path:'/cines',componente:IndiceCines,exact:true},
-{path:'/cines/crear',componente:CrearCines},
-{path:'/cines/editar',componente:EditarCines},
+{path:'/cines',componente:IndiceCines,exact:true, esAdmin:true},
+{path:'/cines/crear',componente:CrearCines, esAdmin:true},
+{path:'/cines/editar/:id(\\d+)',componente:EditarCines, esAdmin:true},
 
+{path:'/pelicula/:id(\\d+)', componente: DetallePelicula, exact:true},
+{path:'/peliculas/filtropeliculas',componente:FiltrarPeliculas },
+{path:'/peliculas/crear',componente:CrearPeliculas, esAdmin:true},
+{path:'/peliculas/editar/:id(\\d+)',componente:EditarPeliculas , esAdmin:true},
 
-{path:'/peliculas/filtropeliculas',componente:FiltrarPeliculas},
-{path:'/peliculas/crear',componente:CrearPeliculas},
-{path:'/peliculas/editar',componente:EditarPeliculas},
 
 
 {path:'/',componente:LandingPage,exact:true},

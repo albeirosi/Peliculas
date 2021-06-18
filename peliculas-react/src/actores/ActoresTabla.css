@@ -1,0 +1,12 @@
+table tr,
+table tr td {
+  vertical-align: middle !important;
+}
+
+.foto {
+  display: flex;
+  margin-top: 10px;
+  height: 190px;
+  justify-content: center;
+  align-items: center;
+}

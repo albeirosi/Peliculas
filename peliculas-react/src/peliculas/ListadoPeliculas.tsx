@@ -1,4 +1,4 @@
-import { pelicula } from './peliculas.model'
+import { peliculaDTO } from './peliculas.model'
 import PeliculaIndividual from './PeliculaIndividual'
 import css from './ListadoPeliculas.module.css';
 //import Cargando from './../Utilidades/Cargando'
@@ -10,10 +10,13 @@ export default function ListadoPeliculas(props: listadoPeliculasProps) {
     return (
         <>
             <ListadoGenerico listado={props.peliculas}>
+               
             <div className={css.div}>
-                {props.peliculas?.map(pelicula =>
+                {
+                props.peliculas?.map(pelicula =>
                     <PeliculaIndividual pelicula={pelicula} key={pelicula.id}
-                    />)}
+                    />)
+                }
             </div>
             </ListadoGenerico>
            
@@ -22,5 +25,5 @@ export default function ListadoPeliculas(props: listadoPeliculasProps) {
 
 }
 interface listadoPeliculasProps {
-    peliculas?: pelicula[];
+    peliculas?: peliculaDTO[];
 }

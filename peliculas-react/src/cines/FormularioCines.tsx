@@ -4,12 +4,25 @@ import FormGroupText from './../Utilidades/FormGroupText'
 import * as Yup from 'yup'
 import Button from "./../Utilidades/Button";
 import { Link } from "react-router-dom";
-import Mapas from '../Utilidades/Mapa';
+import MapaFormulario from '../Utilidades/MapaFormulario';
+import { coordenadasDTO } from "../Utilidades/Coordenadas.model";
 
-export default function FormularioCines(props:formularioCinesProps){
+export default function FormularioCines(props: formularioCinesProps) {
+
+    function transformarCordenada(): coordenadasDTO[] | undefined {
+        if (props.modelo.latitud && props.modelo.longitud) {
+            const respuesta: coordenadasDTO = {
+                lat: props.modelo.latitud,
+                lng: props.modelo.longitud
+            }
+            return [respuesta];
+        }
+       alert(2);
+        return undefined;
+    }
 
 
-    return(
+    return (
         <>
             <Formik
                 initialValues={props.modelo}
@@ -18,11 +31,13 @@ export default function FormularioCines(props:formularioCinesProps){
                     nombre: Yup.string().required("Este campo es requerido").primeraLetraMayuscula()
                 })}
             >
-                {(formikProps)=>(
+                {(formikProps) => (
                     <Form>
-                        <FormGroupText label="Nombre" campo="nombre"/>
-                       <div style={{marginBottom:'1rem'}}>
-                           <Mapas height='250px' />
+                        <FormGroupText label="Nombre" campo="nombre" />
+                        <div style={{ marginBottom: '1rem' }}>
+                            <MapaFormulario campoLat="latitud" campoLng="longitud"
+                                coordenadas={transformarCordenada()}
+                            />
                         </div>
 
                         <Button disabled={formikProps.isSubmitting} type="submit">Guardar</Button>
@@ -32,12 +47,12 @@ export default function FormularioCines(props:formularioCinesProps){
                 )}
 
             </Formik>
-<br/>
+            <br />
         </>
     )
 }
 
-interface formularioCinesProps{
-    modelo:cineCreacionDTO;
-    onSubmit(valores:cineCreacionDTO, acciones:FormikHelpers<cineCreacionDTO>):void;
+interface formularioCinesProps {
+    modelo: cineCreacionDTO;
+    onSubmit(valores: cineCreacionDTO, acciones: FormikHelpers<cineCreacionDTO>): void;
 }
