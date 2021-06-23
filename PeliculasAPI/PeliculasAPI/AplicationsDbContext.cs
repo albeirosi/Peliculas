@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Entidades;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PeliculasAPI
 {
-    public class AplicationsDbContext:DbContext
+    public class AplicationsDbContext:IdentityDbContext
     {
         public AplicationsDbContext(DbContextOptions<AplicationsDbContext> options):base(options)
         {

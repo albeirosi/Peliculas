@@ -17,7 +17,7 @@ export default function FormularioCines(props: formularioCinesProps) {
             }
             return [respuesta];
         }
-       alert(2);
+  
         return undefined;
     }
 

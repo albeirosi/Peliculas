@@ -8,7 +8,7 @@ export default function Menu() {
             <div className="container-fluid" >
                 <NavLink className="navbar-brand" activeClassName={classActive} to="/">Peliculas</NavLink>
 
-                <div className="collapse navbar-collapse">
+                <div className="collapse navbar-collapse" style={{display:'flex',justifyContent:'space-between'}}>
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <li className="nav-item">
@@ -44,6 +44,17 @@ export default function Menu() {
                         />
 
                     </ul>
+                    <div className="d-flex" >
+                        <Autorizado
+                            autorizado = {<> </>}
+                            noAutorizado = {<>
+                                <NavLink to="/Registro" className="nav-link btn btn-link" style={{color:"white"}}>Registro</NavLink>
+                                <NavLink to="/Login" className="nav-link btn btn-link" style={{color:"white"}}>Login</NavLink>
+
+                                </>
+                            }
+                        />
+                    </div>
                 </div>
             </div >
         </nav>

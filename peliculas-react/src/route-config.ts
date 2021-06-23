@@ -20,6 +20,8 @@ import EditarPeliculas from './peliculas/EditarPeliculas'
 import RedirectLanding from './Utilidades/RedirectLanding'
 
 import DetallePelicula from './peliculas/DetallePelicula'
+import Registro from  './Auth/Registro'
+import Login from './Auth/Login'
 
 
 const rutas=[
@@ -40,7 +42,8 @@ const rutas=[
 {path:'/peliculas/crear',componente:CrearPeliculas, esAdmin:true},
 {path:'/peliculas/editar/:id(\\d+)',componente:EditarPeliculas , esAdmin:true},
 
-
+{path:'/registro', componente:Registro},
+{path:'/login', componente:Login},
 
 {path:'/',componente:LandingPage,exact:true},
 

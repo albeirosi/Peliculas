@@ -2,10 +2,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
@@ -13,6 +15,8 @@ using PeliculasAPI.ApiBehavior;
 using PeliculasAPI.Filtros;
 using PeliculasAPI.Utilidades;
 using PeliculasAPI.Validaciones;
+using System;
+using System.Text;
 
 namespace PeliculasAPI
 {
@@ -34,9 +38,23 @@ namespace PeliculasAPI
                     sqlServer => sqlServer.UseNetTopologySuite());
             });
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AplicationsDbContext>()
+                .AddDefaultTokenProviders();
 
             //services.AddTransient<MyActionFilters>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opciones =>
+                opciones.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(Configuration["llavejwt"])),
+                    ClockSkew = TimeSpan.Zero
+                });
 
             //services.AddTransient<IRepositorioEnMemoria, RepositorioEnMemoria>();
             services.AddAutoMapper(typeof(Startup));
