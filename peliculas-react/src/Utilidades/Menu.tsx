@@ -1,8 +1,19 @@
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { NavLink, useHistory } from "react-router-dom";
+import AutenticacionContext from "../Auth/AutenticacionContext";
+import { logout } from "../Auth/manejadorJWT";
 import Autorizado from './../Auth/Autorizado'
+import Button from "./Button";
 
 export default function Menu() {
     const classActive = "active";
+    const {actualizar, claims} = useContext(AutenticacionContext);
+    const history = useHistory();
+    function obtenerNombreUsuario():string
+    {
+        return claims.filter(x=>x.nombre==="email")[0]?.valor;
+    }
+    
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
             <div className="container-fluid" >
@@ -39,17 +50,30 @@ export default function Menu() {
                                             Crear Películas
                                         </NavLink>
                                     </li>
+                                    <li className="nav-item">
+                                        <NavLink className="nav-link" activeClassName={classActive} to="/usuarios">
+                                           Usuarios
+                                        </NavLink>
+                                    </li>
                                 </>
                             }
                         />
 
                     </ul>
-                    <div className="d-flex" >
+                    <div className="d-flex">
                         <Autorizado
-                            autorizado = {<> </>}
+                            autorizado = {<> 
+                            <span className="nav-link colorLetra">Hola, {obtenerNombreUsuario()} </span>
+                            <Button
+                             onClick = {()=>{ logout(); actualizar([]); history.push("/")}} 
+
+                             className="nav-link btn btn-link colorLetra"
+                           
+                             >Log out</Button>
+                            </>}
                             noAutorizado = {<>
-                                <NavLink to="/Registro" className="nav-link btn btn-link" style={{color:"white"}}>Registro</NavLink>
-                                <NavLink to="/Login" className="nav-link btn btn-link" style={{color:"white"}}>Login</NavLink>
+                                <NavLink to="/Registro" className="nav-link btn btn-link colorLetra" >Registro</NavLink>
+                                <NavLink to="/Login" className="nav-link btn btn-link colorLetra" >Login</NavLink>
 
                                 </>
                             }
@@ -62,3 +86,4 @@ export default function Menu() {
 
 
 }
+

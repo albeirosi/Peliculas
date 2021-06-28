@@ -4,24 +4,29 @@ import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import rutas from './route-config';
 import ConfigurarValidaciones from './Validaciones';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons';
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { fab } from '@fortawesome/free-brands-svg-icons';
+// import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import AutenticacionContext from './Auth/AutenticacionContext'
 import {claim} from './Auth/auth.model';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { obtenerClaims } from './Auth/manejadorJWT';
+import {configurarInterceptor} from './Utilidades/Interceptores';
 
-library.add(fab, faCheckSquare, faCoffee);
+
+//library.add(fab, faCheckSquare, faCoffee);
 
 ConfigurarValidaciones();
+configurarInterceptor();
 
 function App() {
 
-  const [claims, setClaims] = useState<claim[]>([
-    // { nombre:'email',   valor:'albeirosi@hotmail.com'},
-    // { nombre:'role',   valor:'admin'}
-  
-  ]);
+  const [claims, setClaims] = useState<claim[]>([]);
+
+  useEffect(()=>{
+    setClaims(obtenerClaims());
+  },[])
   
   function actualizar(claims:claim[]){
     setClaims(claims);

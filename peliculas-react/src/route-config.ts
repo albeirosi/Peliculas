@@ -22,6 +22,7 @@ import RedirectLanding from './Utilidades/RedirectLanding'
 import DetallePelicula from './peliculas/DetallePelicula'
 import Registro from  './Auth/Registro'
 import Login from './Auth/Login'
+import IndiceUsuarios from './Auth/IndiceUsuarios'
 
 
 const rutas=[
@@ -44,10 +45,12 @@ const rutas=[
 
 {path:'/registro', componente:Registro},
 {path:'/login', componente:Login},
+{path:'/usuarios', componente:IndiceUsuarios, esAdmin:true},
+
+
+
 
 {path:'/',componente:LandingPage,exact:true},
-
-
 {path:'*',componente:RedirectLanding,exact:true},
 
 ];

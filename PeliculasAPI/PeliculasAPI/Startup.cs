@@ -16,6 +16,7 @@ using PeliculasAPI.Filtros;
 using PeliculasAPI.Utilidades;
 using PeliculasAPI.Validaciones;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace PeliculasAPI
@@ -24,6 +25,7 @@ namespace PeliculasAPI
     {
         public Startup(IConfiguration configuration)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 
@@ -55,6 +57,11 @@ namespace PeliculasAPI
                         Encoding.UTF8.GetBytes(Configuration["llavejwt"])),
                     ClockSkew = TimeSpan.Zero
                 });
+
+            services.AddAuthorization(op =>
+            {
+                op.AddPolicy("EsAdmin", policy => policy.RequireClaim("role", "admin"));
+            });
 
             //services.AddTransient<IRepositorioEnMemoria, RepositorioEnMemoria>();
             services.AddAutoMapper(typeof(Startup));

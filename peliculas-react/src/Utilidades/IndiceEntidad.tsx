@@ -53,7 +53,12 @@ export default function IndiceEntidad<T>(props: indiceEntidadProps<T>) {
 
     return (
         <>
-            <h1 ><i style={{ borderBottom: '1px solid #6868' }}>{props.titulo}</i>   <Link to={props.urlCrear} className='btn btn-primary mt-1 float-right'>Crear {props.nombreEntidad} </Link> </h1>
+            <h1 ><i style={{ borderBottom: '1px solid #6868' }}>{props.titulo}</i>  
+            {props.urlCrear?
+             <Link to={props.urlCrear} className='btn btn-primary mt-1 float-right'>Crear {props.nombreEntidad} </Link>
+             :null      
+            }
+             </h1>
 
 
             {/* <Link to='generos/editar' className='btn btn-secondary ml-1'>Editar Género </Link> */}
@@ -109,10 +114,10 @@ export default function IndiceEntidad<T>(props: indiceEntidadProps<T>) {
 interface indiceEntidadProps<T> {
 
     url: string;
-    urlCrear: string;
+    urlCrear?: string;
     children(entidad: T[], botones: (urlEditar: string, id: number) => ReactElement): ReactElement;
     titulo: string;
-    nombreEntidad: string;
+    nombreEntidad?: string;
 
 
 }
